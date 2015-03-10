@@ -10,8 +10,8 @@ public class BattleTester {
       bad[0] = new MinionBase();
       bad[1] = new MinionBase();
       bad[2] = new MinionBase();
-
-      boolean victory = BattlePhase.battle(p, bad);
+      BattlePhase battle=new BattlePhase();
+      boolean victory =battle.battle(p, bad);
       if(victory){
          System.out.println("You are free to continued on.");
       }else{
