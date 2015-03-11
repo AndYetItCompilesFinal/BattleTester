@@ -22,7 +22,7 @@ public class BattlePhase {
       a[2] = good.getParty(2);
       int index = 3;
       for(int i = 0; i < bad.length; i++){
-         a[index] = bad[1];
+         a[index] = bad[i];
          index++;
       }
  
