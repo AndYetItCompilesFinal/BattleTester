@@ -8,19 +8,31 @@ public class BattlePhase {
    BattleSetup order;
 
    
-   public boolean battle(Party good, BadGuy[] bad) 
+   public boolean battle(Party good, BadGuy[] b) 
    {
       order = new BattleSetup();
-      this.bad=bad;
+      this.bad= new BadGuy[b.length];
+      for(int i = 0; i < b.length; i++){
+         bad[i] = b[i];
+      }
       //add characters to order based on speed stat
-      this.a =new Character[]{good.getParty(0), good.getParty(1), good.getParty(2), bad[0], bad[1], bad[2]};
+      this.a =new Character[3+bad.length];
+      a[0] = good.getParty(0);
+      a[1] = good.getParty(1);
+      a[2] = good.getParty(2);
+      int index = 3;
+      for(int i = 0; i < bad.length; i++){
+         a[index] = bad[1];
+         index++;
+      }
+ 
       //selection sort
       sort();
       for (Character c : a) 
       {
          order.addChar(c);
       }
-   
+      
       boolean win = round(order, good, bad);
       if(win)
       {
@@ -93,7 +105,7 @@ public class BattlePhase {
             }
          }
       }
-      return false;
+      return true;
    }
 
    //Calculates a random damage in a range
@@ -138,6 +150,7 @@ public class BattlePhase {
             boolean alive = bad[index].applyDamage(dmg);
             if (!alive)
             {
+               remove(index);
                if(victory(bad))
                {
                   return true;
@@ -179,11 +192,12 @@ public class BattlePhase {
    //Lets the user choose the target to attack
    public int chooseTarget(Character c, BadGuy[] bad){
       int target = 0;
-      while(target < 1 || target > 3) {
+      while(target < 1 || target > bad.length) {
          System.out.println("Who do you want to attack?");
-         System.out.println("1. " + bad[0].toString());
-         System.out.println("2. " + bad[1].toString());
-         System.out.println("3. " + bad[2].toString());
+         for(int i = 0; i < bad.length; i++)
+         {
+            System.out.println(i+1 +". " + bad[i].toString());;
+         }
          System.out.println("Enter the number here: ");
          Scanner sc = new Scanner(System.in);
          target = sc.nextInt();
@@ -201,12 +215,26 @@ public class BattlePhase {
    //returns whether the good guys won or not
    public boolean victory(BadGuy[] bad)
    {
-      if(!bad[0].isAlive() && !bad[1].isAlive() && !bad[2].isAlive())
-      {
-         System.out.println("Minion 1: " + bad[0].getStrength());
-         return true;
+      for(int i = 0; i<bad.length; i++){
+         if(bad[i].isAlive())
+         {
+            return false;
+         }
       }
-      return false;
+      return true;
+   }
+   
+   public void remove(int index){
+      if(bad.length != 1){
+         BadGuy[] temp = new BadGuy[bad.length-1];
+         for(int i = 0; i<index; i++){
+            temp[i] = bad[i];
+         }
+         for(int i = index+1; i<bad.length; i++){
+            temp[i-1] = bad[i];
+         }
+         bad = temp;           
+      } 
    }
 
 }
