@@ -6,10 +6,12 @@ public class BattlePhase {
    public Character[] a;
    public BadGuy[] bad;
    BattleSetup order;
+   public Backpack back;
 
    
-   public boolean battle(Party good, BadGuy[] b) 
+   public boolean battle(Party good, BadGuy[] b, Backpack bp) 
    {
+      back = bp;
       order = new BattleSetup();
       this.bad= new BadGuy[b.length];
       for(int i = 0; i < b.length; i++){
@@ -46,10 +48,9 @@ public class BattlePhase {
    }//end of constructor
    
    
-   public boolean battle(Party good, BadGuy bad)
+   public boolean battle(Party good, BadGuy bad, Backpack bp)
    {
-      battle(good,new BadGuy[]{bad});
-      return false;     
+     return battle(good, new BadGuy[]{bad}, bp);  
    }
    
    
@@ -160,8 +161,9 @@ public class BattlePhase {
       }
       else 
       {
-                     //pull up the backpack to use the item
-         System.out.println("Access the backpack items here.");
+         int count = 1;
+         System.out.println("The items that are in your backpack: ");
+         System.out.println(back.toString());
       }
       return false;
    }
